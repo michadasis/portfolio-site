@@ -6,24 +6,28 @@ export default function Navbar() {
 
   return (
     <header className="w-full bg-black text-white shadow-md fixed top-0 left-0 z-50">
-      <div className="max-w-7xl mx-auto flex items-center justify-center gap-12 px-6 py-3">
+      <div className="max-w-7xl mx-auto flex items-center justify-between md:justify-center md:gap-12 px-4 md:px-6 py-3">
+        {/* Logo */}
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-green-900 flex items-center justify-center overflow-hidden">
+          <div className="w-8 h-8 rounded-full bg-green-900 flex items-center justify-center overflow-hidden flex-shrink-0">
             <img
-              src="../mich.png"
+              src="/mich.png"
               alt="Profile"
               className="w-full h-full object-cover"
             />
           </div>
-          <span className="font-semibold text-lg text-green-400">Ioannis Michadasis</span>
+          <span className="font-semibold text-lg text-green-400 whitespace-nowrap hidden md:inline">
+            Ioannis Michadasis
+          </span>
         </div>
 
-        <nav className="flex items-center gap-6">
+        {/* Navigation Links */}
+        <nav className="flex items-center gap-4 md:gap-6">
           {navLinks.map((link) => (
             <a
               key={link}
               href={`#${link.toLowerCase()}`}
-              className={`px-3 py-1 rounded-full transition ${
+              className={`px-3 py-1 rounded-full transition text-sm md:text-base ${
                 activeLink === link
                   ? "bg-green-900 text-green-400 hover:text-green-600"
                   : "bg-green-900 text-green-400 hover:text-green-600"
@@ -34,7 +38,8 @@ export default function Navbar() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-4">
+        {/* Right Icons */}
+        <div className="flex items-center gap-3 md:gap-4">
           <a href="mailto:johnmichadasis@gmail.com" className="text-green-500 hover:text-green-600">
             <Mail size={18} />
           </a>

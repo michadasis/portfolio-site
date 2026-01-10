@@ -1,5 +1,3 @@
-"use client";
-
 import Navbar from "./components/Navbar";
 import ParticleBackground from "./components/ParticleBackground";
 import HeroSection from "./components/HeroSection";
