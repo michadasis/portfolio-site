@@ -1,5 +1,4 @@
 "use client";
-
 import { motion } from "framer-motion";
 import { Github } from "lucide-react";
 import { projects } from "../data/projects";
@@ -13,13 +12,16 @@ export default function ProjectsSection() {
         viewport={{ once: true }}
         className="text-xl mb-6"
       >
-        $ ls projects/
+        $ ls notable-projects/
       </motion.h2>
-
       <div className="grid md:grid-cols-2 gap-6">
-        {projects.map((p) => (
-          <div
+        {projects.map((p, index) => (
+          <motion.div
             key={p.name}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
             className="border border-green-700 rounded-lg p-4 hover:bg-green-500/5 transition"
           >
             <div className="flex flex-col justify-between h-full">
@@ -33,7 +35,7 @@ export default function ProjectsSection() {
                 </a>
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </section>

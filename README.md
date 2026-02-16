@@ -1,22 +1,12 @@
 # Ioannis Michadasis - Portfolio
 
-A modern, terminal-themed portfolio website built with Next.js 14, featuring interactive particle animations and a clean, minimalist design.
-
-![Portfolio Preview](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
+![NextJS](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
 ## Live Site
 
 **Visit the live portfolio:** [https://michadasis.com](https://michadasis.com) [Temp URL](https://michadasis.infinityfree.me/)
-
-## Features
-
-- **Terminal-inspired design** with matrix-style green theme
-- **Interactive particle background** with mouse interaction effects
-- **Fully responsive** layout for all device sizes
-- **Optimized performance** with Next.js 14 App Router
-- **Smooth animations** powered by Framer Motion
 
 ## Tech Stack
 
@@ -30,12 +20,5 @@ A modern, terminal-themed portfolio website built with Next.js 14, featuring int
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Performance
-
-- **Lighthouse Score:** 95+ across all metrics
-- **First Contentful Paint:** < 1.5s
-- **Time to Interactive:** < 3s
-
 ---
-
 Made by Ioannis Michadasis
