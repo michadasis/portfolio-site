@@ -37,9 +37,17 @@ export default function AboutContent() {
         
         <div className="space-y-4 text-green-300 text-sm leading-relaxed border-l-2 border-green-700 pl-6">
           <p>
-            Hi, my name is <span className="text-green-400 font-semibold">Ioannis Michadasis</span>, 
-            I'm an undergraduate Computer Science student at the University of Western Macedonia.
-          </p>
+  Hi, my name is <span className="text-green-400 font-semibold">Ioannis Michadasis</span>, 
+  I'm an undergraduate Computer Science student at the{" "}
+  <a 
+    href="https://cs.uowm.gr/" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="text-green-400 hover:text-green-300 transition"
+  >
+    University of Western Macedonia
+  </a>.
+</p>
           
           <p>
             I'm passionate about building software that combines solid engineering with clean, 

@@ -12,7 +12,7 @@ export default function Navbar() {
   ];
   
   return (
-    <header className="w-full bg-black text-white shadow-md fixed top-0 left-0 z-50">
+    <header className="w-full bg-black text-white shadow-md fixed top-0 left-0 z-50 font-mono">
       <div className="max-w-7xl mx-auto flex items-center justify-between md:justify-center md:gap-12 px-4 md:px-6 py-3">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
@@ -33,7 +33,7 @@ export default function Navbar() {
             <Link
               key={link.name}
               href={link.href}
-              className={`px-3 py-1 rounded-full transition text-sm md:text-base ${
+              className={`px-3 py-1 rounded-full transition text-sm md:text-base font-semibold ${
                 pathname === link.href
                   ? "bg-green-900 text-green-400 hover:text-green-600"
                   : "bg-green-900 text-green-400 hover:text-green-600"
