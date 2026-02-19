@@ -1,9 +1,15 @@
+export interface GitHubLink {
+  label: string;
+  url: string;
+  icon?: "github" | "frontend" | "backend";
+}
+
 export interface Project {
   name: string;
   desc: string;
   detailedDesc: string;
   images: string[];
-  github: string;
+  github: GitHubLink[];
 }
 
 export const projects: Project[] = [
@@ -14,7 +20,9 @@ export const projects: Project[] = [
     images: [
       "/pimages/uowm-app.jpg"
     ],
-    github: "https://github.com/michadasis/generic-restaurant-app",
+      github: [
+    { label: "View on GitHub", url: "https://github.com/michadasis/generic-restaurant-app" },
+  ],
   },
   {
     name: "Multimusic Launcher",
@@ -23,7 +31,9 @@ export const projects: Project[] = [
     images: [
       "/pimages/multimusic.png"
     ],
-    github: "https://github.com/michadasis/multimusiclauncher",
+    github: [
+    { label: "View on GitHub", url: "https://github.com/michadasis/multimusiclauncher" },
+  ],
   },
   {
     name: "Kewl Bot",
@@ -34,6 +44,21 @@ export const projects: Project[] = [
       "/pimages/kewlbot-2.png",
       "/pimages/kewlbot-3.png",
     ],
-    github: "https://github.com/michadasis/kewlbot",
+    github: [
+    { label: "View on GitHub", url: "https://github.com/michadasis/kewlbot" },
+  ],
   },
+  {
+    name: "Blood Alcohol Level Calculator",
+    desc: "A web based blood alcohol level calculator that estimates blood alcohol concentration",
+    detailedDesc: "A full stack web application built with React and Tailwind CSS that allows users to estimate their Blood Alcohol Concentration (BAC) based on gender, weight, number of drinks, drink volume, alcohol percentage, and hours since last drink. The frontend calculates total grams of alcohol consumed and sends the data to a FastAPI backend, which processes the request using the Widmark formula and returns the estimated BAC along with an interpretation level (Sober, Slight Impairment, Impaired, Legally Intoxicated).",
+    images: [
+    "/pimages/bac-1.png",
+    "/pimages/bac-2.png",
+  ],
+  github: [
+    { label: "View frontend on github", url: "https://github.com/BM-utils/BAC-Counter-Frontend", icon: "frontend" },
+    { label: "View backend on github", url: "https://github.com/BM-utils/BAC-counter-backend", icon: "backend" },
+  ],
+},
 ];

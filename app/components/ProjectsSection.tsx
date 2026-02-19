@@ -1,15 +1,22 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import { Github, ChevronDown, ChevronLeft, ChevronRight, X, Maximize2 } from "lucide-react";
+import { Github, ChevronDown, ChevronLeft, ChevronRight, X, Maximize2, Monitor, Server } from "lucide-react";
 import { projects } from "../data/projects";
 import { useState } from "react";
 import Image from "next/image";
+
+const RepoIcon = ({ icon }: { icon?: string }) => {
+  if (icon === "frontend") return <Monitor size={18} />;
+  if (icon === "backend") return <Server size={18} />;
+  return <Github size={18} />;
+};
 
 export default function ProjectsSection() {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState<Record<number, number>>({});
   const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [lightboxImage, setLightboxImage] = useState<string>("");
+  const [lightboxProjectIndex, setLightboxProjectIndex] = useState<number | null>(null);
+  const [lightboxImageIndex, setLightboxImageIndex] = useState(0);
 
   const toggleExpand = (index: number) => {
     setExpandedIndex(prev => prev === index ? null : index);
@@ -31,14 +38,29 @@ export default function ProjectsSection() {
     }));
   };
 
-  const openLightbox = (imageSrc: string, e: React.MouseEvent) => {
+  const openLightbox = (projectIndex: number, imageIndex: number, e: React.MouseEvent) => {
     e.stopPropagation();
-    setLightboxImage(imageSrc);
+    setLightboxProjectIndex(projectIndex);
+    setLightboxImageIndex(imageIndex);
     setLightboxOpen(true);
   };
 
   const closeLightbox = () => {
     setLightboxOpen(false);
+    setLightboxProjectIndex(null);
+  };
+
+  const lightboxProject = lightboxProjectIndex !== null ? projects[lightboxProjectIndex] : null;
+  const lightboxTotalImages = lightboxProject?.images.length ?? 0;
+
+  const nextLightboxImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setLightboxImageIndex(prev => (prev + 1) % lightboxTotalImages);
+  };
+
+  const prevLightboxImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setLightboxImageIndex(prev => (prev - 1 + lightboxTotalImages) % lightboxTotalImages);
   };
 
   return (
@@ -58,8 +80,12 @@ export default function ProjectsSection() {
           const currentImg = currentImageIndex[index] || 0;
           
           return (
-            <div
+            <motion.div
               key={`project-${index}`}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
               className={`border border-green-700 rounded-lg overflow-hidden hover:bg-green-500/5 transition ${
                 isExpanded ? 'md:col-span-2' : ''
               }`}
@@ -84,18 +110,20 @@ export default function ProjectsSection() {
                   </div>
                 </div>
 
-                {/* GitHub button - only show when collapsed */}
                 {!isExpanded && (
                   <div className="flex gap-3 mt-3">
-                    <a
-                      href={p.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover:text-green-200 transition"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <Github size={18} />
-                    </a>
+                    {p.github.map((repo) => (
+                      <a
+                        key={repo.url}
+                        href={repo.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-green-200 transition"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <RepoIcon icon={repo.icon} />
+                      </a>
+                    ))}
                   </div>
                 )}
               </div>
@@ -113,8 +141,9 @@ export default function ProjectsSection() {
                       {hasImages && (
                         <div className="relative w-full max-w-2xl mx-auto">
                           <div className="relative w-full h-64 md:h-80 rounded-lg overflow-hidden border border-green-700 group">
-                            <div className="relative w-full h-full cursor-pointer"
-                              onClick={(e) => openLightbox(p.images[currentImg], e)}
+                            <div
+                              className="relative w-full h-full cursor-pointer"
+                              onClick={(e) => openLightbox(index, currentImg, e)}
                             >
                               <Image
                                 src={p.images[currentImg]}
@@ -122,16 +151,14 @@ export default function ProjectsSection() {
                                 fill
                                 className="object-cover"
                               />
-                              {/* Expand icon overlay */}
                               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center pointer-events-none">
-                                <Maximize2 
-                                  size={32} 
+                                <Maximize2
+                                  size={32}
                                   className="text-white opacity-0 group-hover:opacity-100 transition-opacity"
                                 />
                               </div>
                             </div>
 
-                            {/* Image navigation controls - only show if multiple images */}
                             {p.images.length > 1 && (
                               <>
                                 <button
@@ -152,7 +179,6 @@ export default function ProjectsSection() {
                             )}
                           </div>
 
-                          {/* Image indicator dots */}
                           {p.images.length > 1 && (
                             <div className="flex justify-center gap-2 mt-3">
                               {p.images.map((_, imgIndex) => (
@@ -183,31 +209,33 @@ export default function ProjectsSection() {
                           {p.detailedDesc}
                         </p>
                       )}
-                      
-                      <div className="flex gap-3 pt-2 max-w-2xl mx-auto">
-                        <a
-                          href={p.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="hover:text-green-200 flex items-center gap-2 text-sm"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <Github size={18} />
-                          <span>View on GitHub</span>
-                        </a>
+
+                      <div className="flex flex-col gap-2 pt-2 max-w-2xl mx-auto">
+                        {p.github.map((repo) => (
+                          <a
+                            key={repo.url}
+                            href={repo.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-green-200 flex items-center gap-2 text-sm"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <RepoIcon icon={repo.icon} />
+                            <span>{repo.label}</span>
+                          </a>
+                        ))}
                       </div>
                     </div>
                   </motion.div>
                 )}
               </AnimatePresence>
-            </div>
+            </motion.div>
           );
         })}
       </div>
 
-      {/* Lightbox Modal */}
       <AnimatePresence>
-        {lightboxOpen && (
+        {lightboxOpen && lightboxProject && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -216,16 +244,23 @@ export default function ProjectsSection() {
             className="fixed inset-0 bg-black/95 z-[9999] flex items-center justify-center p-4 cursor-zoom-out"
           >
             <button
-              onClick={(e) => {
-                e.stopPropagation();
-                closeLightbox();
-              }}
+              onClick={(e) => { e.stopPropagation(); closeLightbox(); }}
               className="fixed top-20 right-4 bg-green-700/50 hover:bg-green-700 rounded-full p-3 text-white transition z-[10000] backdrop-blur-sm"
               aria-label="Close"
             >
               <X size={24} />
             </button>
-            
+
+            {lightboxTotalImages > 1 && (
+              <button
+                onClick={prevLightboxImage}
+                className="fixed left-4 top-1/2 -translate-y-1/2 bg-green-700/50 hover:bg-green-700 rounded-full p-3 text-white transition z-[10000] backdrop-blur-sm"
+                aria-label="Previous image"
+              >
+                <ChevronLeft size={24} />
+              </button>
+            )}
+
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -235,16 +270,29 @@ export default function ProjectsSection() {
               onClick={(e) => e.stopPropagation()}
             >
               <Image
-                src={lightboxImage}
-                alt="Full size image"
+                src={lightboxProject.images[lightboxImageIndex]}
+                alt={`${lightboxProject.name} - Image ${lightboxImageIndex + 1}`}
                 fill
                 className="object-contain"
                 quality={100}
               />
             </motion.div>
 
+            {lightboxTotalImages > 1 && (
+              <button
+                onClick={nextLightboxImage}
+                className="fixed right-4 top-1/2 -translate-y-1/2 bg-green-700/50 hover:bg-green-700 rounded-full p-3 text-white transition z-[10000] backdrop-blur-sm"
+                aria-label="Next image"
+              >
+                <ChevronRight size={24} />
+              </button>
+            )}
+
             <div className="fixed bottom-4 left-1/2 -translate-x-1/2 text-green-400 text-sm z-[10000]">
-              Click anywhere to close or press the X
+              {lightboxTotalImages > 1
+                ? `${lightboxImageIndex + 1} / ${lightboxTotalImages} — Click anywhere to close or press the X`
+                : "Click anywhere to close or press the X"
+              }
             </div>
           </motion.div>
         )}
