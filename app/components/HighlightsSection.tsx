@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { Zap, Users, Code2, Rocket } from "lucide-react";
+import { Code2, Rocket } from "lucide-react";
 
 export default function HighlightsSection() {
   const highlights = [

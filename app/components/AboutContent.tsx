@@ -1,14 +1,9 @@
 "use client";
 import { motion } from "framer-motion";
 import { Code2, BookOpen, Lightbulb, Terminal } from "lucide-react";
+import { skills } from "../data/skills";
 
 export default function AboutContent() {
-  const skills = {
-    languages: ["JavaScript", "TypeScript", "Python", "Java", "C"],
-    frontend: ["React", "Next.js", "Tailwind CSS", "Framer Motion"],
-    backend: ["Node.js", "FastAPI", "Express", "REST APIs", "MongoDB"],
-    tools: ["Git", "Docker", "VS Code", "Linux"]
-  };
 
   return (
     <div className="space-y-16">

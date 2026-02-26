@@ -16,7 +16,7 @@ export const projects: Project[] = [
   {
     name: "UoWM Restaurant Menu App",
     desc: "An app developed for the University of Western Macedonia's students to access the weekly menu in a clean and simple way.",
-    detailedDesc: "A comprehensive mobile application built with React Native that provides easier access to the university cafeteria's weekly menu.",
+    detailedDesc: "A mobile application built with React Native that provides easier access to the university's restaurant weekly menu.",
     images: [
       "/pimages/uowm-app.jpg"
     ],
@@ -27,7 +27,7 @@ export const projects: Project[] = [
   {
     name: "Multimusic Launcher",
     desc: "Multimusic Launcher is a powerful tool designed to simplify the process of launching music applications from a single interface.",
-    detailedDesc: "A desktop application that unifies multiple music streaming services into one launcher. Built with Electron, it allows users to quickly switch between Spotify, Apple Music, YouTube Music without cluttering their taskbar.",
+    detailedDesc: "A desktop application that unifies multiple music streaming services into one launcher. Built with Electron, it allows users to quickly switch between Spotify, Apple Music, YouTube Music without taking up excessive space in their taskbar.",
     images: [
       "/pimages/multimusic.png"
     ],
@@ -37,8 +37,8 @@ export const projects: Project[] = [
   },
   {
     name: "Kewl Bot",
-    desc: "A feature rich Discord bot with server moderation utilities, designed to help everyday discord server management while having fun commands.",
-    detailedDesc: "A comprehensive Discord bot built with Discord.js featuring automated moderation tools, role management, welcome messages, and server analytics. Includes advanced features like anti-spam protection, temporary mutes/bans, and logging system, while having some fun related commands.",
+    desc: "A feature rich Discord bot with server moderation utilities, designed to help everyday discord server management",
+    detailedDesc: "A Discord bot built with Discord.js & MongoDB featuring automated moderation tools, role management, welcome messages, and server analytics. Includes advanced features like anti spam protection, temporary mutes/bans, and logging system, while having some fun related commands.",
     images: [
       "/pimages/kewlbot-1.png",
       "/pimages/kewlbot-2.png",
