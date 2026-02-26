@@ -2,7 +2,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Github, ChevronDown, ChevronLeft, ChevronRight, X, Maximize2, Monitor, Server } from "lucide-react";
 import { projects } from "../data/projects";
-import { useState } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 
 const RepoIcon = ({ icon }: { icon?: string }) => {
@@ -17,6 +17,9 @@ export default function ProjectsSection() {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxProjectIndex, setLightboxProjectIndex] = useState<number | null>(null);
   const [lightboxImageIndex, setLightboxImageIndex] = useState(0);
+
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
 
   const toggleExpand = (index: number) => {
     setExpandedIndex(prev => prev === index ? null : index);
@@ -45,22 +48,58 @@ export default function ProjectsSection() {
     setLightboxOpen(true);
   };
 
-  const closeLightbox = () => {
+  const closeLightbox = useCallback(() => {
     setLightboxOpen(false);
     setLightboxProjectIndex(null);
-  };
+  }, []);
 
   const lightboxProject = lightboxProjectIndex !== null ? projects[lightboxProjectIndex] : null;
   const lightboxTotalImages = lightboxProject?.images.length ?? 0;
 
-  const nextLightboxImage = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setLightboxImageIndex(prev => (prev + 1) % lightboxTotalImages);
+  const nextLightboxImage = useCallback(() => {
+    if (lightboxTotalImages > 1) {
+      setLightboxImageIndex(prev => (prev + 1) % lightboxTotalImages);
+    }
+  }, [lightboxTotalImages]);
+
+  const prevLightboxImage = useCallback(() => {
+    if (lightboxTotalImages > 1) {
+      setLightboxImageIndex(prev => (prev - 1 + lightboxTotalImages) % lightboxTotalImages);
+    }
+  }, [lightboxTotalImages]);
+
+  useEffect(() => {
+    if (!lightboxOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowRight") nextLightboxImage();
+      if (e.key === "ArrowLeft") prevLightboxImage();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [lightboxOpen, closeLightbox, nextLightboxImage, prevLightboxImage]);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
   };
 
-  const prevLightboxImage = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setLightboxImageIndex(prev => (prev - 1 + lightboxTotalImages) % lightboxTotalImages);
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null || touchStartY.current === null) return;
+
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+    const deltaY = e.changedTouches[0].clientY - touchStartY.current;
+
+    // Only trigger if horizontal swipe is more prominent than vertical
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+      if (deltaX < 0) nextLightboxImage();
+      else prevLightboxImage();
+    }
+
+    touchStartX.current = null;
+    touchStartY.current = null;
   };
 
   return (
@@ -241,6 +280,8 @@ export default function ProjectsSection() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={closeLightbox}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
             className="fixed inset-0 bg-black/95 z-[9999] flex items-center justify-center p-4 cursor-zoom-out"
           >
             <button
@@ -253,7 +294,7 @@ export default function ProjectsSection() {
 
             {lightboxTotalImages > 1 && (
               <button
-                onClick={prevLightboxImage}
+                onClick={(e) => { e.stopPropagation(); prevLightboxImage(); }}
                 className="fixed left-4 top-1/2 -translate-y-1/2 bg-green-700/50 hover:bg-green-700 rounded-full p-3 text-white transition z-[10000] backdrop-blur-sm"
                 aria-label="Previous image"
               >
@@ -280,7 +321,7 @@ export default function ProjectsSection() {
 
             {lightboxTotalImages > 1 && (
               <button
-                onClick={nextLightboxImage}
+                onClick={(e) => { e.stopPropagation(); nextLightboxImage(); }}
                 className="fixed right-4 top-1/2 -translate-y-1/2 bg-green-700/50 hover:bg-green-700 rounded-full p-3 text-white transition z-[10000] backdrop-blur-sm"
                 aria-label="Next image"
               >
@@ -288,10 +329,10 @@ export default function ProjectsSection() {
               </button>
             )}
 
-            <div className="fixed bottom-4 left-1/2 -translate-x-1/2 text-green-400 text-sm z-[10000]">
+            <div className="fixed bottom-4 left-1/2 -translate-x-1/2 text-green-400 text-sm z-[10000] text-center">
               {lightboxTotalImages > 1
-                ? `${lightboxImageIndex + 1} / ${lightboxTotalImages} — Click anywhere to close or press the X`
-                : "Click anywhere to close or press the X"
+                ? `${lightboxImageIndex + 1} / ${lightboxTotalImages} — Press the X to exit`
+                : "Press the X to exit"
               }
             </div>
           </motion.div>
