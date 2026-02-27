@@ -1,7 +1,7 @@
 export interface GitHubLink {
   label: string;
   url: string;
-  icon?: "github" | "frontend" | "backend";
+  icon?: "github" | "frontend" | "backend" | "globe";
 }
 
 export interface Project {
@@ -57,6 +57,7 @@ export const projects: Project[] = [
     "/pimages/bac-2.png",
   ],
   github: [
+    { label: "View live site", url: "https://alccalc.vercel.app/", icon: "globe" },
     { label: "View frontend on github", url: "https://github.com/BM-utils/BAC-Counter-Frontend", icon: "frontend" },
     { label: "View backend on github", url: "https://github.com/BM-utils/BAC-counter-backend", icon: "backend" },
   ],

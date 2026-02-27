@@ -1,6 +1,6 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import { Github, ChevronDown, ChevronLeft, ChevronRight, X, Maximize2, Monitor, Server } from "lucide-react";
+import { Github, ChevronDown, ChevronLeft, ChevronRight, X, Maximize2, Monitor, Server, Globe } from "lucide-react";
 import { projects } from "../data/projects";
 import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
@@ -8,6 +8,7 @@ import Image from "next/image";
 const RepoIcon = ({ icon }: { icon?: string }) => {
   if (icon === "frontend") return <Monitor size={18} />;
   if (icon === "backend") return <Server size={18} />;
+  if (icon === "globe") return <Globe size={18} />;
   return <Github size={18} />;
 };
 
