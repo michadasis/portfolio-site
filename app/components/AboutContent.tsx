@@ -46,13 +46,13 @@ export default function AboutContent() {
           
           <p>
             I'm passionate about building software that combines solid engineering with clean, 
-            practical design. I'm particularly interested in <span className="text-green-400">full-stack development</span>, 
+            practical design. I'm particularly interested in <span className="text-green-400">full stack development</span>, 
             <span className="text-green-400"> backend systems</span>, and modern web technologies.
           </p>
           
           <p>
             I enjoy learning by building, experimenting with new technologies, and continuously 
-            improving my skills through personal projects and open-source contributions. I'm always 
+            improving my skills through personal projects and open source contributions. I'm always 
             eager to take on new challenges, collaborate with others, and grow as a developer while 
             turning ideas into real, working solutions.
           </p>
@@ -112,7 +112,7 @@ export default function AboutContent() {
           <p>
             Right now, I'm diving deeper into <span className="text-green-400">system design</span> and 
             <span className="text-green-400"> distributed systems</span>, learning how to build scalable 
-            applications that can handle real-world complexity.
+            applications that can handle real world complexity.
           </p>
           <p>
             I'm also exploring <span className="text-green-400">DevOps practices</span> and 
@@ -138,7 +138,7 @@ export default function AboutContent() {
             <h3 className="text-green-400 font-semibold mb-2">Learning by Doing</h3>
             <p>
               I believe the best way to learn is by building. Every project teaches me something new, 
-              whether it's a technical concept or a better way to approach problem-solving.
+              whether it's a technical concept or a better way to solve a problem.
             </p>
           </div>
           
