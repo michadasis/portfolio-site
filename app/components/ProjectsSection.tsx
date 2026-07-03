@@ -1,7 +1,7 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
 import { Github, ChevronDown, ChevronLeft, ChevronRight, X, Maximize2, Monitor, Server, Globe } from "lucide-react";
-import { projects } from "../data/projects";
+import type { Project } from "../data/projects";
 import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 
@@ -13,6 +13,7 @@ const RepoIcon = ({ icon }: { icon?: string }) => {
 };
 
 export default function ProjectsSection() {
+  const [projects, setProjects] = useState<Project[]>([]);
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState<Record<number, number>>({});
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -21,6 +22,13 @@ export default function ProjectsSection() {
 
   const touchStartX = useRef<number | null>(null);
   const touchStartY = useRef<number | null>(null);
+
+  useEffect(() => {
+    fetch("/api/projects.php")
+      .then((res) => res.json())
+      .then((data) => setProjects(data))
+      .catch(() => setProjects([]));
+  }, []);
 
   const toggleExpand = (index: number) => {
     setExpandedIndex(prev => prev === index ? null : index);

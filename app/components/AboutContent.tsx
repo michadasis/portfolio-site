@@ -1,9 +1,19 @@
 "use client";
 import { motion } from "framer-motion";
 import { Code2, BookOpen, Lightbulb, Terminal } from "lucide-react";
-import { skills } from "../data/skills";
+import { useEffect, useState } from "react";
+
+type Skills = Record<string, string[]>;
 
 export default function AboutContent() {
+  const [skills, setSkills] = useState<Skills>({});
+
+  useEffect(() => {
+    fetch("/api/skills.php")
+      .then((res) => res.json())
+      .then((data) => setSkills(data))
+      .catch(() => setSkills({}));
+  }, []);
 
   return (
     <div className="space-y-16">
@@ -32,8 +42,8 @@ export default function AboutContent() {
         
         <div className="space-y-4 text-green-300 text-sm leading-relaxed border-l-2 border-green-700 pl-6">
           <p>
-  Hi, my name is <span className="text-green-400 font-semibold">Ioannis Michadasis</span>, 
-  I'm an undergraduate Computer Science student at the{" "}
+  Hi, I'm <span className="text-green-400 font-semibold">Ioannis Michadasis</span>, 
+  a Computer Science student at the{" "}
   <a 
     href="https://cs.uowm.gr/" 
     target="_blank" 
@@ -45,16 +55,20 @@ export default function AboutContent() {
 </p>
           
           <p>
-            I'm passionate about building software that combines solid engineering with clean, 
-            practical design. I'm particularly interested in <span className="text-green-400">full stack development</span>, 
-            <span className="text-green-400"> backend systems</span>, and modern web technologies.
+            Most of what I know I've picked up by shipping things, not by reading about them. I like 
+            taking a problem I actually have — a menu I keep forgetting to check, an install process 
+            that takes too many steps — and turning it into a working app. That's led me toward 
+            <span className="text-green-400"> full stack development</span>, but I move across the stack 
+            pretty freely: web, mobile, desktop, whatever the problem calls for.
           </p>
           
           <p>
-            I enjoy learning by building, experimenting with new technologies, and continuously 
-            improving my skills through personal projects and open source contributions. I'm always 
-            eager to take on new challenges, collaborate with others, and grow as a developer while 
-            turning ideas into real, working solutions.
+            Right now I volunteer with <span className="text-green-400">Open Source UoM</span>, where I 
+            contribute to UniBackpack, a Qt6/C++ tool that cuts down the manual steps students go through 
+            to install university software. Before that I worked with the{" "}
+            <span className="text-green-400">IEEE Student Branch Kastoria</span> on my.cs.uowm.gr, 
+            helping build out the portal and adding a PDF scraper that automates the weekly restaurant 
+            menu lookup — a small thing, but hundreds of students used to do that by hand every week.
           </p>
         </div>
       </motion.section>
@@ -110,14 +124,17 @@ export default function AboutContent() {
         
         <div className="border-l-2 border-green-700 pl-6 space-y-3 text-green-300 text-sm">
           <p>
-            Right now, I'm diving deeper into <span className="text-green-400">system design</span> and 
-            <span className="text-green-400"> distributed systems</span>, learning how to build scalable 
-            applications that can handle real world complexity.
+            My latest project is <span className="text-green-400">ApplyPilot</span>, a Python/Playwright 
+            bot that automates job applications across Greenhouse, Lever, and Workday, using an LLM to 
+            fill out forms and match listings. Building it meant getting a lot more comfortable with 
+            browser automation, state machines, and keeping a bot from breaking every time a site changes 
+            its layout slightly.
           </p>
           <p>
-            I'm also exploring <span className="text-green-400">DevOps practices</span> and 
-            <span className="text-green-400"> cloud technologies</span> to better understand the full 
-            lifecycle of software development and deployment.
+            Before that I built <span className="text-green-400">StaffOS</span>, a full staff management 
+            platform with Next.js, Prisma, and MySQL, and spent a while getting role-based access control 
+            right so people only see what they're supposed to. Between that and UniBackpack, I've been 
+            splitting time pretty evenly between web and native/desktop work lately.
           </p>
         </div>
       </motion.section>
@@ -135,26 +152,26 @@ export default function AboutContent() {
         
         <div className="space-y-4 text-green-300 text-sm">
           <div className="border border-green-700 rounded-lg p-5 hover:bg-green-500/5 transition">
-            <h3 className="text-green-400 font-semibold mb-2">Learning by Doing</h3>
+            <h3 className="text-green-400 font-semibold mb-2">Build the thing, then fix it</h3>
             <p>
-              I believe the best way to learn is by building. Every project teaches me something new, 
-              whether it's a technical concept or a better way to solve a problem.
+              I'd rather have something working end-to-end and rough around the edges than a perfect 
+              plan and no code. Most of what I actually learn happens after the first version breaks.
             </p>
           </div>
           
           <div className="border border-green-700 rounded-lg p-5 hover:bg-green-500/5 transition">
-            <h3 className="text-green-400 font-semibold mb-2">Clean Code Matters</h3>
+            <h3 className="text-green-400 font-semibold mb-2">Code other people can read</h3>
             <p>
-              I strive to write code that's not just functional, but readable and maintainable. 
-              Good code should communicate its intent clearly to any developer.
+              I've worked on a few team projects now — UniBackpack, my.cs.uowm.gr — and the difference 
+              between code that's easy to hand off and code that isn't is huge. I try to write the former.
             </p>
           </div>
           
           <div className="border border-green-700 rounded-lg p-5 hover:bg-green-500/5 transition">
-            <h3 className="text-green-400 font-semibold mb-2">Always Growing</h3>
+            <h3 className="text-green-400 font-semibold mb-2">Still figuring a lot out</h3>
             <p>
-              Technology evolves constantly, and so should I. I'm committed to continuous learning, 
-              staying curious, and embracing new challenges that push me outside my comfort zone.
+              I'm early in this. I'd rather be upfront about that than pretend otherwise — I just try 
+              to make sure each project teaches me something I didn't already know.
             </p>
           </div>
         </div>

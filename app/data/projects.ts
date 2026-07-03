@@ -1,3 +1,6 @@
+// Project data now lives in the database, fetched via /api/projects.php.
+// This file only keeps the shared type definitions.
+
 export interface GitHubLink {
   label: string;
   url: string;
@@ -12,6 +15,7 @@ export interface Project {
   github: GitHubLink[];
 }
 
+/* Old static data (kept for reference, no longer used):
 export const projects: Project[] = [
   {
     name: "UoWM Restaurant Menu App",
@@ -89,3 +93,4 @@ export const projects: Project[] = [
   ],
   },
 ];
+*/
