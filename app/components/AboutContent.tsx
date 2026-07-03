@@ -56,7 +56,7 @@ export default function AboutContent() {
           
           <p>
             Most of what I know I've picked up by shipping things, not by reading about them. I like 
-            taking a problem I actually have — a menu I keep forgetting to check, an install process 
+            taking a problem I actually have, a menu I keep forgetting to check, an install process 
             that takes too many steps — and turning it into a working app. That's led me toward 
             <span className="text-green-400"> full stack development</span>, but I move across the stack 
             pretty freely: web, mobile, desktop, whatever the problem calls for.
@@ -68,7 +68,7 @@ export default function AboutContent() {
             to install university software. Before that I worked with the{" "}
             <span className="text-green-400">IEEE Student Branch Kastoria</span> on my.cs.uowm.gr, 
             helping build out the portal and adding a PDF scraper that automates the weekly restaurant 
-            menu lookup — a small thing, but hundreds of students used to do that by hand every week.
+            menu lookup.
           </p>
         </div>
       </motion.section>
@@ -124,14 +124,7 @@ export default function AboutContent() {
         
         <div className="border-l-2 border-green-700 pl-6 space-y-3 text-green-300 text-sm">
           <p>
-            My latest project is <span className="text-green-400">ApplyPilot</span>, a Python/Playwright 
-            bot that automates job applications across Greenhouse, Lever, and Workday, using an LLM to 
-            fill out forms and match listings. Building it meant getting a lot more comfortable with 
-            browser automation, state machines, and keeping a bot from breaking every time a site changes 
-            its layout slightly.
-          </p>
-          <p>
-            Before that I built <span className="text-green-400">StaffOS</span>, a full staff management 
+            My latest project is <span className="text-green-400">StaffOS</span>, a full staff management 
             platform with Next.js, Prisma, and MySQL, and spent a while getting role-based access control 
             right so people only see what they're supposed to. Between that and UniBackpack, I've been 
             splitting time pretty evenly between web and native/desktop work lately.
@@ -162,7 +155,7 @@ export default function AboutContent() {
           <div className="border border-green-700 rounded-lg p-5 hover:bg-green-500/5 transition">
             <h3 className="text-green-400 font-semibold mb-2">Code other people can read</h3>
             <p>
-              I've worked on a few team projects now — UniBackpack, my.cs.uowm.gr — and the difference 
+              I've worked on a few team projects now, UniBackpack, my.cs.uowm.gr and the difference 
               between code that's easy to hand off and code that isn't is huge. I try to write the former.
             </p>
           </div>
@@ -170,7 +163,7 @@ export default function AboutContent() {
           <div className="border border-green-700 rounded-lg p-5 hover:bg-green-500/5 transition">
             <h3 className="text-green-400 font-semibold mb-2">Still figuring a lot out</h3>
             <p>
-              I'm early in this. I'd rather be upfront about that than pretend otherwise — I just try 
+              I'm early in this. I'd rather be upfront about that than pretend otherwise, I just try 
               to make sure each project teaches me something I didn't already know.
             </p>
           </div>
