@@ -1,0 +1,16 @@
+CREATE TABLE IF NOT EXISTS skills (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  category VARCHAR(50) NOT NULL,
+  item VARCHAR(100) NOT NULL,
+  sort_order INT DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS projects (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(150) NOT NULL,
+  short_desc TEXT NOT NULL,
+  detailed_desc TEXT NOT NULL,
+  images JSON NOT NULL,
+  github_links JSON NOT NULL,
+  sort_order INT DEFAULT 0
+);
