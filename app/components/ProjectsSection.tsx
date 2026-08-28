@@ -12,8 +12,11 @@ const RepoIcon = ({ icon }: { icon?: string }) => {
   return <Github size={18} />;
 };
 
+type LoadState = "loading" | "ready" | "error";
+
 export default function ProjectsSection() {
   const [projects, setProjects] = useState<Project[]>([]);
+  const [loadState, setLoadState] = useState<LoadState>("loading");
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState<Record<number, number>>({});
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -24,10 +27,28 @@ export default function ProjectsSection() {
   const touchStartY = useRef<number | null>(null);
 
   useEffect(() => {
+    let cancelled = false;
+
     fetch("/api/projects.php")
-      .then((res) => res.json())
-      .then((data) => setProjects(data))
-      .catch(() => setProjects([]));
+      .then((res) => {
+        if (!res.ok) throw new Error(`Request failed with status ${res.status}`);
+        return res.json();
+      })
+      .then((data) => {
+        if (cancelled) return;
+        if (!Array.isArray(data)) throw new Error("Unexpected response shape");
+        setProjects(data);
+        setLoadState("ready");
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setProjects([]);
+        setLoadState("error");
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const toggleExpand = (index: number) => {
@@ -121,6 +142,49 @@ export default function ProjectsSection() {
       >
         $ ls notable-projects/
       </motion.h2>
+      {loadState === "loading" && (
+        <div className="flex flex-col md:grid md:grid-cols-2 gap-6" aria-busy="true">
+          {[0, 1].map((i) => (
+            <div
+              key={`skeleton-${i}`}
+              className="border border-green-700/50 rounded-lg p-4 animate-pulse"
+            >
+              <div className="h-5 w-1/2 bg-green-900/60 rounded" />
+              <div className="h-3 w-full bg-green-900/40 rounded mt-4" />
+              <div className="h-3 w-3/4 bg-green-900/40 rounded mt-2" />
+            </div>
+          ))}
+        </div>
+      )}
+
+      {loadState === "error" && (
+        <div className="border border-amber-600/60 bg-amber-500/5 rounded-lg p-5">
+          <p className="text-amber-400 font-semibold mb-2">
+            $ projects: failed to load
+          </p>
+          <p className="text-green-300 text-sm">
+            The project list could not be loaded right now. Everything is also
+            available directly on GitHub.
+          </p>
+          <a
+            href="https://github.com/michadasis"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 mt-4 text-sm text-green-400 hover:text-green-200 transition"
+          >
+            <Github size={16} />
+            <span>github.com/michadasis</span>
+          </a>
+        </div>
+      )}
+
+      {loadState === "ready" && projects.length === 0 && (
+        <p className="text-green-300 text-sm">
+          No projects are listed at the moment.
+        </p>
+      )}
+
+      {loadState === "ready" && projects.length > 0 && (
       <div className="flex flex-col md:grid md:grid-cols-2 gap-6">
         {projects.map((p, index) => {
           const isExpanded = expandedIndex === index;
@@ -281,6 +345,7 @@ export default function ProjectsSection() {
           );
         })}
       </div>
+      )}
 
       <AnimatePresence>
         {lightboxOpen && lightboxProject && (

@@ -1,18 +1,47 @@
 "use client";
 import { motion } from "framer-motion";
-import { Code2, BookOpen, Lightbulb, Terminal } from "lucide-react";
+import { Code2, BookOpen, Lightbulb, Terminal, Github } from "lucide-react";
 import { useEffect, useState } from "react";
 
 type Skills = Record<string, string[]>;
+type LoadState = "loading" | "ready" | "error";
+
+const isSkills = (value: unknown): value is Skills =>
+  typeof value === "object" &&
+  value !== null &&
+  !Array.isArray(value) &&
+  Object.values(value as Record<string, unknown>).every(
+    (items) =>
+      Array.isArray(items) && items.every((item) => typeof item === "string")
+  );
 
 export default function AboutContent() {
   const [skills, setSkills] = useState<Skills>({});
+  const [skillsState, setSkillsState] = useState<LoadState>("loading");
 
   useEffect(() => {
+    let cancelled = false;
+
     fetch("/api/skills.php")
-      .then((res) => res.json())
-      .then((data) => setSkills(data))
-      .catch(() => setSkills({}));
+      .then((res) => {
+        if (!res.ok) throw new Error(`Request failed with status ${res.status}`);
+        return res.json();
+      })
+      .then((data) => {
+        if (cancelled) return;
+        if (!isSkills(data)) throw new Error("Unexpected response shape");
+        setSkills(data);
+        setSkillsState("ready");
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setSkills({});
+        setSkillsState("error");
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return (
@@ -84,31 +113,81 @@ export default function AboutContent() {
           $ ls skills/
         </h2>
         
-        <div className="grid md:grid-cols-2 gap-6">
-          {Object.entries(skills).map(([category, items], index) => (
-            <motion.div
-              key={category}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.4, delay: 0.3 + index * 0.1 }}
-              className="border border-green-700 rounded-lg p-5 hover:bg-green-500/5 transition"
-            >
-              <h3 className="text-green-400 font-semibold mb-3 capitalize">
-                {category}
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {items.map((item) => (
-                  <span
-                    key={item}
-                    className="px-3 py-1 bg-green-900/30 border border-green-700 rounded text-green-300 text-xs"
-                  >
-                    {item}
-                  </span>
-                ))}
+        {skillsState === "loading" && (
+          <div className="grid md:grid-cols-2 gap-6" aria-busy="true">
+            {[0, 1].map((i) => (
+              <div
+                key={`skills-skeleton-${i}`}
+                className="border border-green-700/50 rounded-lg p-5 animate-pulse"
+              >
+                <div className="h-4 w-24 bg-green-900/60 rounded" />
+                <div className="flex flex-wrap gap-2 mt-4">
+                  {[0, 1, 2, 3].map((j) => (
+                    <div
+                      key={`skills-skeleton-${i}-${j}`}
+                      className="h-6 w-20 bg-green-900/40 rounded"
+                    />
+                  ))}
+                </div>
               </div>
-            </motion.div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
+
+        {skillsState === "error" && (
+          <div className="border border-amber-600/60 bg-amber-500/5 rounded-lg p-5">
+            <p className="text-amber-400 font-semibold mb-2">
+              $ skills: failed to load
+            </p>
+            <p className="text-green-300 text-sm">
+              The skills list could not be loaded right now. The code behind
+              every skill listed here is on GitHub.
+            </p>
+            <a
+              href="https://github.com/michadasis"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 mt-4 text-sm text-green-400 hover:text-green-200 transition"
+            >
+              <Github size={16} />
+              <span>github.com/michadasis</span>
+            </a>
+          </div>
+        )}
+
+        {skillsState === "ready" && Object.keys(skills).length === 0 && (
+          <p className="text-green-300 text-sm">
+            No skills are listed at the moment.
+          </p>
+        )}
+
+        {skillsState === "ready" && Object.keys(skills).length > 0 && (
+          <div className="grid md:grid-cols-2 gap-6">
+            {Object.entries(skills).map(([category, items], index) => (
+              <motion.div
+                key={category}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, delay: 0.3 + index * 0.1 }}
+                className="border border-green-700 rounded-lg p-5 hover:bg-green-500/5 transition"
+              >
+                <h3 className="text-green-400 font-semibold mb-3 capitalize">
+                  {category}
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {items.map((item) => (
+                    <span
+                      key={item}
+                      className="px-3 py-1 bg-green-900/30 border border-green-700 rounded text-green-300 text-xs"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
       </motion.section>
 
       {/* What I'm Learning */}
