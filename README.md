@@ -6,19 +6,6 @@
 
 ## Live Site
 
-**Visit the live portfolio:** [https://michadasis.com](https://michadasis.com) [Temp URL](https://michadasis.infinityfree.me/)
-
-## Tech Stack
-
-- **Framework:** [Next.js 14](https://nextjs.org/) (App Router)
-- **Language:** [TypeScript](https://www.typescriptlang.org/)
-- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
-- **Animations:** [Framer Motion](https://www.framer.com/motion/)
-- **Icons:** [Lucide React](https://lucide.dev/)
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+**Visit the live portfolio:** [https://michadasis.com](https://michadasis.com)
 
 ---
-Made by Ioannis Michadasis
