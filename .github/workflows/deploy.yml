@@ -1,0 +1,68 @@
+name: Deploy to production
+
+on:
+  push:
+    branches: [production]
+  workflow_dispatch:
+
+concurrency:
+  group: ftp-deploy
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build static export
+        run: npm run build
+
+      - name: Verify build output
+        run: |
+          test -f out/index.html || { echo "out/index.html missing, aborting"; exit 1; }
+          test -f out/about/index.html || { echo "out/about/index.html missing, aborting"; exit 1; }
+          test -f out/sitemap.xml || { echo "out/sitemap.xml missing, aborting"; exit 1; }
+          echo "Files to upload: $(find out -type f | wc -l)"
+
+      - name: Deploy site to public_html
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          local-dir: ./out/
+          server-dir: public_html/
+          dry-run: false
+          log-level: standard
+
+      - name: Deploy PHP API to public_html/api
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          local-dir: ./api/
+          server-dir: public_html/api/
+          dry-run: false
+          log-level: standard
+          exclude: |
+            **/config.php
+            **/config.example.php
