@@ -11,7 +11,7 @@ export default function Home() {
       <Navbar />
       <div className="min-h-screen bg-black text-green-400 font-sans relative overflow-hidden pt-24">
         <ParticleBackground />
-        <main className="relative z-10 max-w-4xl mx-auto px-6 py-20 space-y-24">
+        <main className="relative z-10 max-w-4xl mx-auto px-6 pt-20 pb-24 space-y-24">
           <HeroSection />
           <HighlightsSection />
           <ProjectsSection />

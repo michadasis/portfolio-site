@@ -33,7 +33,7 @@ export default function AboutPage() {
       <Navbar />
       <div className="min-h-screen bg-black text-green-400 font-mono relative overflow-hidden pt-24">
         <ParticleBackground />
-        <main className="relative z-10 max-w-4xl mx-auto px-6 py-20">
+        <main className="relative z-10 max-w-4xl mx-auto px-6 pt-20 pb-24">
           <AboutContent />
           <div className="mt-24">
             <Footer />
