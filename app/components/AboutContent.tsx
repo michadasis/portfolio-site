@@ -239,13 +239,6 @@ export default function AboutContent() {
             </p>
           </div>
           
-          <div className="border border-green-700 rounded-lg p-5 hover:bg-green-500/5 transition">
-            <h3 className="text-green-400 font-semibold mb-2">Still figuring a lot out</h3>
-            <p>
-              I'm early in this. I'd rather be upfront about that than pretend otherwise, I just try 
-              to make sure each project teaches me something I didn't already know.
-            </p>
-          </div>
         </div>
       </motion.section>
 
