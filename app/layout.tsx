@@ -62,7 +62,7 @@ const personJsonLd = {
   image: `${siteUrl}/mich.png`,
   jobTitle: "Computer Science Student",
   description: siteDescription,
-  email: "mailto:johnmichadasis@gmail.com",
+  email: "mailto:contact@michadasis.com",
   affiliation: {
     "@type": "CollegeOrUniversity",
     name: "University of Western Macedonia",

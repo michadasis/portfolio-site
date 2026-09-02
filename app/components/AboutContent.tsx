@@ -257,7 +257,7 @@ export default function AboutContent() {
             I'm always interested in new opportunities, collaborations, or just a good conversation about tech.
           </p>
           <a
-            href="mailto:johnmichadasis@gmail.com"
+            href="mailto:contact@michadasis.com"
             className="inline-block px-6 py-3 bg-green-900 text-green-400 rounded-lg hover:bg-green-800 transition font-semibold"
           >
             Send message

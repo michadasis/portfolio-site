@@ -57,7 +57,7 @@ export default function Navbar() {
         </nav>
         {/* Right Icons */}
         <div className="flex items-center gap-3 md:gap-4">
-          <a href="mailto:johnmichadasis@gmail.com" aria-label="Email" className="text-green-500 hover:text-green-600">
+          <a href="mailto:contact@michadasis.com" aria-label="Email" className="text-green-500 hover:text-green-600">
             <Mail size={18} />
           </a>
           <a href="https://linkedin.com/in/johnmichadasis" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-green-500 hover:text-green-600">
