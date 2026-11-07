@@ -59,7 +59,7 @@ const personJsonLd = {
   name: "Ioannis Michadasis",
   alternateName: "John Michadasis",
   url: siteUrl,
-  image: `${siteUrl}/profile.jpg`,
+  image: `${siteUrl}/mich.png`,
   jobTitle: "Computer Science Student",
   description: siteDescription,
   email: "mailto:contact@michadasis.com",

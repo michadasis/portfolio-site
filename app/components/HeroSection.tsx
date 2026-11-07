@@ -9,19 +9,13 @@ export default function HeroSection() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="flex items-center gap-5 sm:gap-7"
       >
-        <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-2 border-green-700 bg-green-900 overflow-hidden flex-shrink-0">
-          <img src="/profile.jpg" alt="Ioannis Michadasis" className="w-full h-full object-cover" />
-        </div>
-        <div className="min-w-0">
-          <h1 className="text-4xl md:text-5xl font-bold text-green-400">
-            Hi, I&apos;m Ioannis
-          </h1>
-          <p className="mt-2 text-green-300 font-mono text-sm md:text-base">
-            Computer Science Student
-          </p>
-        </div>
+        <h1 className="text-4xl md:text-5xl font-bold text-green-400">
+          Hi, I&apos;m Ioannis
+        </h1>
+        <p className="mt-2 text-green-300 font-mono text-sm md:text-base">
+          Computer Science Student
+        </p>
       </motion.div>
 
       <motion.div
@@ -40,18 +34,18 @@ export default function HeroSection() {
           >
             University of Western Macedonia
           </a>
-          . Most of what I know I&apos;ve picked up by shipping things, not by reading about them.
+          . I learn by putting what I study into real projects that people actually use.
         </p>
         <p>
-          I like taking a problem I actually have, a menu I keep forgetting to check, an install
-          process that takes too many steps, and turning it into a working app. That&apos;s led me
-          toward <span className="text-green-400">full stack development</span>, but I move across the
-          stack pretty freely: web, mobile, desktop, whatever the problem calls for.
+          Most of my work starts from a real problem, like a restaurant menu that&apos;s hard to find
+          or a software setup that takes too many steps, and ends up as an app people use every day.
+          That&apos;s led me toward <span className="text-green-400">full stack development</span>, and I
+          work across web, mobile and desktop depending on what the problem needs.
         </p>
         <p>
-          My approach is simple: <span className="text-green-400">build the thing, then fix it.</span>{" "}
-          I&apos;d rather have something working end-to-end and rough around the edges than a perfect
-          plan and no code, and I try to write code that&apos;s easy for the next person to pick up.
+          I care about <span className="text-green-400">building software that holds up</span>: thinking
+          the design through before writing code, keeping it clean and readable for the next person,
+          and testing it properly before it reaches users.
         </p>
       </motion.div>
 

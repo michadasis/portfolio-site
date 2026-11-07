@@ -51,7 +51,24 @@ export default function ProjectsSection() {
     };
   }, []);
 
+  // Width / height of every image we've seen, so the frame can match its shape
+  const [ratios, setRatios] = useState<Record<string, number>>({});
+
+  // Start downloading all of a project's images as soon as it opens, so
+  // switching between them (or opening the lightbox) is instant
+  const preloadImages = (images: string[]) => {
+    images.forEach((src) => {
+      const img = new window.Image();
+      img.onload = () => {
+        const ratio = img.naturalWidth / img.naturalHeight;
+        setRatios(prev => (prev[src] ? prev : { ...prev, [src]: ratio }));
+      };
+      img.src = src;
+    });
+  };
+
   const toggleExpand = (index: number) => {
+    if (expandedIndex !== index) preloadImages(projects[index]?.images ?? []);
     setExpandedIndex(prev => prev === index ? null : index);
   };
 
@@ -242,14 +259,14 @@ export default function ProjectsSection() {
                         onClick={() => toggleExpand(index)}
                         aria-expanded={isExpanded}
                         aria-label={`${isExpanded ? "Hide" : "Show"} details for ${p.name}`}
-                        className="flex-shrink-0 p-1 -m-1 text-green-500 hover:text-green-300 transition"
+                        className="flex-shrink-0 w-9 h-9 rounded-full bg-green-400 text-black flex items-center justify-center shadow-lg shadow-black/60 hover:bg-green-300 transition"
                       >
                         <motion.span
                           animate={{ rotate: isExpanded ? 180 : 0 }}
                           transition={{ duration: 0.3 }}
                           className="block"
                         >
-                          <ChevronDown size={20} />
+                          <ChevronDown size={22} strokeWidth={2.75} />
                         </motion.span>
                       </button>
                     </div>
@@ -287,7 +304,16 @@ export default function ProjectsSection() {
                       <div className="pt-5 sm:pl-16 space-y-4">
                         {hasImages && (
                           <div className="relative w-full">
-                            <div className="relative w-full h-56 md:h-72 rounded-lg overflow-hidden border border-green-700 group">
+                            {/* The frame takes the image's own shape: phone screenshots get a
+                                narrow, capped-height frame instead of being cropped */}
+                            <div
+                              className="relative mx-auto max-w-full rounded-lg overflow-hidden border border-green-700 bg-black group"
+                              style={
+                                (ratios[p.images[currentImg]] ?? 16 / 9) < 1
+                                  ? { height: "min(26rem, 70vh)", aspectRatio: ratios[p.images[currentImg]] }
+                                  : { width: "100%", aspectRatio: ratios[p.images[currentImg]] ?? 16 / 9 }
+                              }
+                            >
                               <div
                                 className="relative w-full h-full cursor-pointer"
                                 onClick={(e) => openLightbox(index, currentImg, e)}
@@ -296,7 +322,8 @@ export default function ProjectsSection() {
                                   src={p.images[currentImg]}
                                   alt={`${p.name} - Image ${currentImg + 1}`}
                                   fill
-                                  className="object-cover"
+                                  priority
+                                  className="object-contain"
                                 />
                                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center pointer-events-none">
                                   <Maximize2
@@ -327,10 +354,10 @@ export default function ProjectsSection() {
                             </div>
 
                             {p.images.length > 1 && (
-                              <div className="flex justify-center gap-2 mt-3">
-                                {p.images.map((_, imgIndex) => (
+                              <div className="flex gap-2 mt-3 overflow-x-auto pb-1">
+                                {p.images.map((src, imgIndex) => (
                                   <button
-                                    key={imgIndex}
+                                    key={src}
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       setCurrentImageIndex(prev => ({
@@ -338,13 +365,16 @@ export default function ProjectsSection() {
                                         [index]: imgIndex
                                       }));
                                     }}
-                                    aria-label={`Go to image ${imgIndex + 1}`}
-                                    className={`w-2 h-2 rounded-full transition ${
+                                    aria-label={`Show image ${imgIndex + 1}`}
+                                    aria-current={currentImg === imgIndex}
+                                    className={`relative w-16 h-12 flex-shrink-0 rounded-md overflow-hidden border-2 bg-black transition ${
                                       currentImg === imgIndex
-                                        ? "bg-green-400"
-                                        : "bg-green-700 hover:bg-green-600"
+                                        ? "border-green-400"
+                                        : "border-green-900 opacity-60 hover:opacity-100"
                                     }`}
-                                  />
+                                  >
+                                    <Image src={src} alt="" fill sizes="64px" className="object-cover object-top" />
+                                  </button>
                                 ))}
                               </div>
                             )}

@@ -122,4 +122,9 @@
   body {
     @apply bg-background text-foreground;
   }
+  /* Tailwind v4 leaves buttons on the default arrow cursor */
+  button:not(:disabled),
+  [role="button"] {
+    cursor: pointer;
+  }
 }
