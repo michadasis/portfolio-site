@@ -60,6 +60,7 @@ const work: Entry[] = [
     period: "Dec 2025 – May 2026",
     title: "Student Member",
     org: "IEEE Student Branch UoWM Kastoria",
+    orgUrl: "https://ieee.cs.uowm.gr/",
     points: [
       "Helped build out the my.cs.uowm.gr student portal.",
       "Added a PDF scraper that automates the weekly restaurant menu lookup.",
