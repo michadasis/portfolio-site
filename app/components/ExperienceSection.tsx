@@ -15,7 +15,7 @@ const work: Entry[] = [
   {
     period: "May 2026 – Present",
     current: true,
-    title: "Lead Software Engineer (Volunteer)",
+    title: "Lead Developer (Volunteer)",
     org: "Open Source UoM",
     orgUrl: "https://github.com/open-source-uom",
     points: [
