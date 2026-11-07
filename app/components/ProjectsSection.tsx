@@ -1,15 +1,15 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import { Github, ChevronDown, ChevronLeft, ChevronRight, X, Maximize2, Monitor, Server, Globe } from "lucide-react";
+import { Github, ChevronDown, ChevronLeft, ChevronRight, X, Maximize2, Monitor, Server, Globe, FolderGit2, ArrowUpRight } from "lucide-react";
 import type { Project } from "../data/projects";
 import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 
-const RepoIcon = ({ icon }: { icon?: string }) => {
-  if (icon === "frontend") return <Monitor size={18} />;
-  if (icon === "backend") return <Server size={18} />;
-  if (icon === "globe") return <Globe size={18} />;
-  return <Github size={18} />;
+const RepoIcon = ({ icon, size = 18 }: { icon?: string; size?: number }) => {
+  if (icon === "frontend") return <Monitor size={size} />;
+  if (icon === "backend") return <Server size={size} />;
+  if (icon === "globe") return <Globe size={size} />;
+  return <Github size={size} />;
 };
 
 type LoadState = "loading" | "ready" | "error";
@@ -133,25 +133,27 @@ export default function ProjectsSection() {
   };
 
   return (
-    <section id="activity">
+    <section id="projects" className="scroll-mt-14 py-16 border-t border-green-900/60">
       <motion.h2
         initial={{ opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="text-xl mb-6"
+        className="text-xl mb-8 flex items-center gap-2 font-mono"
       >
+        <FolderGit2 size={20} />
         $ ls notable-projects/
       </motion.h2>
+
       {loadState === "loading" && (
-        <div className="flex flex-col md:grid md:grid-cols-2 gap-6" aria-busy="true">
-          {[0, 1].map((i) => (
-            <div
-              key={`skeleton-${i}`}
-              className="border border-green-700/50 rounded-lg p-4 animate-pulse"
-            >
-              <div className="h-5 w-1/2 bg-green-900/60 rounded" />
-              <div className="h-3 w-full bg-green-900/40 rounded mt-4" />
-              <div className="h-3 w-3/4 bg-green-900/40 rounded mt-2" />
+        <div className="space-y-6" aria-busy="true">
+          {[0, 1, 2].map((i) => (
+            <div key={`skeleton-${i}`} className="flex gap-4 animate-pulse">
+              <div className="w-12 h-12 rounded-lg bg-green-900/60 flex-shrink-0" />
+              <div className="flex-1">
+                <div className="h-5 w-1/3 bg-green-900/60 rounded" />
+                <div className="h-3 w-full bg-green-900/40 rounded mt-3" />
+                <div className="h-3 w-2/3 bg-green-900/40 rounded mt-2" />
+              </div>
             </div>
           ))}
         </div>
@@ -159,7 +161,7 @@ export default function ProjectsSection() {
 
       {loadState === "error" && (
         <div className="border border-amber-600/60 bg-amber-500/5 rounded-lg p-5">
-          <p className="text-amber-400 font-semibold mb-2">
+          <p className="text-amber-400 font-semibold mb-2 font-mono">
             $ projects: failed to load
           </p>
           <p className="text-green-300 text-sm">
@@ -185,166 +187,176 @@ export default function ProjectsSection() {
       )}
 
       {loadState === "ready" && projects.length > 0 && (
-      <div className="flex flex-col md:grid md:grid-cols-2 gap-6">
-        {projects.map((p, index) => {
-          const isExpanded = expandedIndex === index;
-          const hasImages = p.images && p.images.length > 0;
-          const currentImg = currentImageIndex[index] || 0;
-          
-          return (
-            <motion.div
-              key={`project-${index}`}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className={`border border-green-700 rounded-lg overflow-hidden hover:bg-green-500/5 transition ${
-                isExpanded ? 'md:col-span-2' : ''
-              }`}
-            >
-              <div className="p-4">
-                <div
-                  onClick={() => toggleExpand(index)}
-                  className="cursor-pointer select-none"
-                >
-                  <div className="flex justify-between items-start gap-2">
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-lg">{p.name}</h3>
-                      <p className="text-green-300 text-sm mt-1">{p.desc}</p>
-                    </div>
-                    <motion.div
-                      animate={{ rotate: isExpanded ? 180 : 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="flex-shrink-0"
-                    >
-                      <ChevronDown size={20} className="text-green-400" />
-                    </motion.div>
-                  </div>
-                </div>
+        <ul className="divide-y divide-green-900/60">
+          {projects.map((p, index) => {
+            const isExpanded = expandedIndex === index;
+            const hasImages = p.images && p.images.length > 0;
+            const currentImg = currentImageIndex[index] || 0;
+            const primaryLink = p.github[0];
 
-                {!isExpanded && (
-                  <div className="flex gap-3 mt-3">
-                    {p.github.map((repo) => (
-                      <a
-                        key={repo.url}
-                        href={repo.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="hover:text-green-200 transition"
-                        onClick={(e) => e.stopPropagation()}
+            return (
+              <motion.li
+                key={`project-${index}`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.05 }}
+                className="py-6 first:pt-0 last:pb-0"
+              >
+                <div className="flex gap-4">
+                  {/* Thumbnail: the project's first screenshot */}
+                  <div className="relative w-12 h-12 rounded-lg border border-green-800 bg-green-950 overflow-hidden flex-shrink-0 flex items-center justify-center text-green-500">
+                    {hasImages ? (
+                      <Image src={p.images[0]} alt="" fill className="object-cover object-top" />
+                    ) : (
+                      <FolderGit2 size={22} />
+                    )}
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-3">
+                      <h3 className="text-lg font-semibold text-green-300">
+                        {primaryLink ? (
+                          <a
+                            href={primaryLink.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 hover:text-green-200 transition"
+                          >
+                            {p.name}
+                            <ArrowUpRight size={16} className="text-green-600 flex-shrink-0" />
+                          </a>
+                        ) : (
+                          p.name
+                        )}
+                      </h3>
+                      <button
+                        type="button"
+                        onClick={() => toggleExpand(index)}
+                        aria-expanded={isExpanded}
+                        aria-label={`${isExpanded ? "Hide" : "Show"} details for ${p.name}`}
+                        className="flex-shrink-0 p-1 -m-1 text-green-500 hover:text-green-300 transition"
                       >
-                        <RepoIcon icon={repo.icon} />
-                      </a>
-                    ))}
-                  </div>
-                )}
-              </div>
+                        <motion.span
+                          animate={{ rotate: isExpanded ? 180 : 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="block"
+                        >
+                          <ChevronDown size={20} />
+                        </motion.span>
+                      </button>
+                    </div>
 
-              <AnimatePresence initial={false}>
-                {isExpanded && (
-                  <motion.div
-                    initial={{ height: 0 }}
-                    animate={{ height: "auto" }}
-                    exit={{ height: 0 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="overflow-hidden"
-                  >
-                    <div className="border-t border-green-700 p-4 space-y-4">
-                      {hasImages && (
-                        <div className="relative w-full max-w-2xl mx-auto">
-                          <div className="relative w-full h-64 md:h-80 rounded-lg overflow-hidden border border-green-700 group">
-                            <div
-                              className="relative w-full h-full cursor-pointer"
-                              onClick={(e) => openLightbox(index, currentImg, e)}
-                            >
-                              <Image
-                                src={p.images[currentImg]}
-                                alt={`${p.name} - Image ${currentImg + 1}`}
-                                fill
-                                className="object-cover"
-                              />
-                              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center pointer-events-none">
-                                <Maximize2
-                                  size={32}
-                                  className="text-white opacity-0 group-hover:opacity-100 transition-opacity"
-                                />
-                              </div>
-                            </div>
+                    <p className="mt-1 text-green-300/90 text-sm leading-relaxed">{p.desc}</p>
 
-                            {p.images.length > 1 && (
-                              <>
-                                <button
-                                  onClick={(e) => prevImage(index, p.images.length, e)}
-                                  className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 rounded-full p-2 transition z-10"
-                                  aria-label="Previous image"
-                                >
-                                  <ChevronLeft size={20} className="text-green-400" />
-                                </button>
-                                <button
-                                  onClick={(e) => nextImage(index, p.images.length, e)}
-                                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 rounded-full p-2 transition z-10"
-                                  aria-label="Next image"
-                                >
-                                  <ChevronRight size={20} className="text-green-400" />
-                                </button>
-                              </>
-                            )}
-                          </div>
-
-                          {p.images.length > 1 && (
-                            <div className="flex justify-center gap-2 mt-3">
-                              {p.images.map((_, imgIndex) => (
-                                <button
-                                  key={imgIndex}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setCurrentImageIndex(prev => ({
-                                      ...prev,
-                                      [index]: imgIndex
-                                    }));
-                                  }}
-                                  aria-label={`Go to image ${imgIndex + 1}`}
-                                  className={`w-2 h-2 rounded-full transition ${
-                                    currentImg === imgIndex
-                                      ? "bg-green-400"
-                                      : "bg-green-700 hover:bg-green-600"
-                                  }`}
-                                />
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      )}
-
-                      {p.detailedDesc && (
-                        <p className="text-green-200 text-sm leading-relaxed max-w-2xl mx-auto">
-                          {p.detailedDesc}
-                        </p>
-                      )}
-
-                      <div className="flex flex-col gap-2 pt-2 max-w-2xl mx-auto">
+                    {p.github.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mt-3">
                         {p.github.map((repo) => (
                           <a
                             key={repo.url}
                             href={repo.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="hover:text-green-200 flex items-center gap-2 text-sm"
-                            onClick={(e) => e.stopPropagation()}
+                            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-green-800 text-green-400 text-xs font-mono hover:bg-green-500/10 hover:text-green-200 transition"
                           >
-                            <RepoIcon icon={repo.icon} />
-                            <span>{repo.label}</span>
+                            <RepoIcon icon={repo.icon} size={14} />
+                            {repo.label}
                           </a>
                         ))}
                       </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          );
-        })}
-      </div>
+                    )}
+                  </div>
+                </div>
+
+                <AnimatePresence initial={false}>
+                  {isExpanded && (
+                    <motion.div
+                      initial={{ height: 0 }}
+                      animate={{ height: "auto" }}
+                      exit={{ height: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="overflow-hidden"
+                    >
+                      <div className="pt-5 sm:pl-16 space-y-4">
+                        {hasImages && (
+                          <div className="relative w-full">
+                            <div className="relative w-full h-56 md:h-72 rounded-lg overflow-hidden border border-green-700 group">
+                              <div
+                                className="relative w-full h-full cursor-pointer"
+                                onClick={(e) => openLightbox(index, currentImg, e)}
+                              >
+                                <Image
+                                  src={p.images[currentImg]}
+                                  alt={`${p.name} - Image ${currentImg + 1}`}
+                                  fill
+                                  className="object-cover"
+                                />
+                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center pointer-events-none">
+                                  <Maximize2
+                                    size={32}
+                                    className="text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                                  />
+                                </div>
+                              </div>
+
+                              {p.images.length > 1 && (
+                                <>
+                                  <button
+                                    onClick={(e) => prevImage(index, p.images.length, e)}
+                                    className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 rounded-full p-2 transition z-10"
+                                    aria-label="Previous image"
+                                  >
+                                    <ChevronLeft size={20} className="text-green-400" />
+                                  </button>
+                                  <button
+                                    onClick={(e) => nextImage(index, p.images.length, e)}
+                                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 rounded-full p-2 transition z-10"
+                                    aria-label="Next image"
+                                  >
+                                    <ChevronRight size={20} className="text-green-400" />
+                                  </button>
+                                </>
+                              )}
+                            </div>
+
+                            {p.images.length > 1 && (
+                              <div className="flex justify-center gap-2 mt-3">
+                                {p.images.map((_, imgIndex) => (
+                                  <button
+                                    key={imgIndex}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setCurrentImageIndex(prev => ({
+                                        ...prev,
+                                        [index]: imgIndex
+                                      }));
+                                    }}
+                                    aria-label={`Go to image ${imgIndex + 1}`}
+                                    className={`w-2 h-2 rounded-full transition ${
+                                      currentImg === imgIndex
+                                        ? "bg-green-400"
+                                        : "bg-green-700 hover:bg-green-600"
+                                    }`}
+                                  />
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        )}
+
+                        {p.detailedDesc && (
+                          <p className="text-green-200 text-sm leading-relaxed">
+                            {p.detailedDesc}
+                          </p>
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.li>
+            );
+          })}
+        </ul>
       )}
 
       <AnimatePresence>
@@ -405,7 +417,7 @@ export default function ProjectsSection() {
 
             <div className="fixed bottom-4 left-1/2 -translate-x-1/2 text-green-400 text-sm z-[10000] text-center">
               {lightboxTotalImages > 1
-                ? `${lightboxImageIndex + 1} / ${lightboxTotalImages} — Press the X to exit`
+                ? `${lightboxImageIndex + 1} / ${lightboxTotalImages} · Press the X to exit`
                 : "Press the X to exit"
               }
             </div>
