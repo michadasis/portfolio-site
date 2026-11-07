@@ -9,6 +9,7 @@ export interface GitHubLink {
 
 export interface Project {
   name: string;
+  icon?: string | null;
   desc: string;
   detailedDesc: string;
   images: string[];

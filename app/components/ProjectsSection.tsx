@@ -204,9 +204,11 @@ export default function ProjectsSection() {
                 className="py-6 first:pt-0 last:pb-0"
               >
                 <div className="flex gap-4">
-                  {/* Thumbnail: the project's first screenshot */}
+                  {/* Thumbnail: the project's icon, or its first screenshot if it has none */}
                   <div className="relative w-12 h-12 rounded-lg border border-green-800 bg-green-950 overflow-hidden flex-shrink-0 flex items-center justify-center text-green-500">
-                    {hasImages ? (
+                    {p.icon ? (
+                      <Image src={p.icon} alt="" fill sizes="48px" className="object-contain" />
+                    ) : hasImages ? (
                       <Image src={p.images[0]} alt="" fill className="object-cover object-top" />
                     ) : (
                       <FolderGit2 size={22} />
