@@ -52,7 +52,7 @@ INSERT INTO projects (name, icon, short_desc, detailed_desc, images, github_link
   '/picons/staffos.png',
   'A web based staff management platform',
   'StaffOS is a full stack staff management platform built with Next.js 16, Prisma, and PostgreSQL, deployed on Vercel. It covers the whole employee lifecycle: registration and approval, task tracking, attendance, leave requests, payroll configuration, direct messaging with live presence, performance reports and Excel/PDF exports, all behind a role based access system with Admin, Manager and Staff roles. It also has two factor authentication, audit logs, email announcements and a weekly digest email.',
-  '["/pimages/staffos12.png","/pimages/staffos.png","/pimages/staffos1.png","/pimages/staffos2.png","/pimages/staffos3.png","/pimages/staffos4.png","/pimages/staffos5.png","/pimages/staffos6.png","/pimages/staffos7.png","/pimages/staffos8.png","/pimages/staffos9.png","/pimages/staffos10.png","/pimages/staffos11.png","/pimages/staffos13.png"]',
+  '["/pimages/staffos-1.jpg","/pimages/staffos-2.jpg","/pimages/staffos-3.jpg","/pimages/staffos-4.jpg","/pimages/staffos-5.jpg","/pimages/staffos-6.jpg","/pimages/staffos-7.jpg","/pimages/staffos-8.jpg"]',
   '[{"label":"View live site","url":"https://staffos-chi.vercel.app/","icon":"globe"},{"label":"View documentation","url":"https://github.com/michadasis/staffos/blob/main/README.md","icon":"frontend"},{"label":"View on github","url":"https://github.com/michadasis/staffos"}]',
   5
 ),
