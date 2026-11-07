@@ -205,9 +205,14 @@ export default function ProjectsSection() {
               >
                 <div className="flex gap-4">
                   {/* Thumbnail: the project's icon, or its first screenshot if it has none */}
-                  <div className="relative w-12 h-12 rounded-lg border border-green-800 bg-green-950 overflow-hidden flex-shrink-0 flex items-center justify-center text-green-500">
+                  {/* Icons bring their own tile, so they skip the green frame */}
+                  <div
+                    className={`relative w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 flex items-center justify-center text-green-500 ${
+                      p.icon ? "" : "border border-green-800 bg-green-950"
+                    }`}
+                  >
                     {p.icon ? (
-                      <Image src={p.icon} alt="" fill sizes="48px" className="object-contain" />
+                      <Image src={p.icon} alt="" fill sizes="48px" className="object-cover" />
                     ) : hasImages ? (
                       <Image src={p.images[0]} alt="" fill className="object-cover object-top" />
                     ) : (
