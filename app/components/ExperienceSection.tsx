@@ -58,7 +58,7 @@ const work: Entry[] = [
   },
   {
     period: "Dec 2025 – May 2026",
-    title: "Member",
+    title: "Student Member",
     org: "IEEE Student Branch UoWM Kastoria",
     points: [
       "Helped build out the my.cs.uowm.gr student portal.",

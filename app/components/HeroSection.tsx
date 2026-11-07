@@ -38,7 +38,7 @@ export default function HeroSection() {
         </p>
         <p>
           Most of my work starts from a real problem, like a restaurant menu that&apos;s hard to find
-          or a software setup that takes too many steps, and ends up as an app people use every day.
+          or a software setup that takes too many steps, and ends up as a working app.
           That&apos;s led me toward <span className="text-green-400">full stack development</span>, and I
           work across web, mobile and desktop depending on what the problem needs.
         </p>
