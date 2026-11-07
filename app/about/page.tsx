@@ -1,45 +1,23 @@
 import type { Metadata } from "next";
-import Navbar from "../components/Navbar";
-import ParticleBackground from "../components/ParticleBackground";
-import Footer from "../components/Footer";
-import AboutContent from "../components/AboutContent";
+import Link from "next/link";
 
-const pageTitle = "About | Ioannis Michadasis";
-const pageDescription =
-  "About Ioannis Michadasis: Computer Science student at the University of Western Macedonia, open source contributor and full stack developer.";
-
+// About is part of the home page now. This page only exists so old /about/
+// links and bookmarks still land on the About section.
 export const metadata: Metadata = {
-  title: pageTitle,
-  description: pageDescription,
-  alternates: {
-    canonical: "/about/",
-  },
-  openGraph: {
-    type: "profile",
-    url: "/about/",
-    title: pageTitle,
-    description: pageDescription,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: pageTitle,
-    description: pageDescription,
-  },
+  robots: { index: false },
 };
 
 export default function AboutPage() {
   return (
     <>
-      <Navbar />
-      <div className="min-h-screen bg-black text-green-400 font-mono relative overflow-hidden pt-24">
-        <ParticleBackground />
-        <main className="relative z-10 max-w-4xl mx-auto px-6 pt-20 pb-24">
-          <AboutContent />
-          <div className="mt-24">
-            <Footer />
-          </div>
-        </main>
-      </div>
+      <meta httpEquiv="refresh" content="0; url=/#about" />
+      <p className="min-h-screen bg-black text-green-400 font-mono p-6">
+        About moved to{" "}
+        <Link href="/#about" className="underline hover:text-green-200">
+          the home page
+        </Link>
+        .
+      </p>
     </>
   );
 }
