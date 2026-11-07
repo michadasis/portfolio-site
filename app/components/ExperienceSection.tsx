@@ -31,8 +31,8 @@ const work: Entry[] = [
     orgUrl: "https://github.com/Kastoria-Dev-Core",
     points: [
       "Started a team of students in Kastoria that builds open source projects together.",
-      "Building the city bus app with every line, stop and timetable in Kastoria, approved by the operator, KTEL Kastorias.",
-      "Timetables sync from the operator's website every morning through GitHub Actions, and a Node.js service on Vercel serves the operator's announcements as a JSON feed.",
+      "Building the city bus app with every line, stop and timetable in Kastoria, approved by the operator, Astika KTEL Kastorias.",
+      "Timetables sync from the operator's website every morning through GitHub Actions, and a Node.js service serves the operator's announcements as a JSON feed.",
     ],
   },
   {
@@ -41,7 +41,7 @@ const work: Entry[] = [
     title: "Server Admin and Developer",
     org: "Πληροφορική UoWM, the CS students' Discord server",
     points: [
-      "Help run the Discord server for the department's Computer Science students.",
+      "Started and run the Discord server for the department's Computer Science students.",
       "Built the bot that verifies new members through their university email, with one-time codes and rate limits.",
       "Built a watcher that posts new exam schedules and timetables from cs.uowm.gr within minutes of the department uploading them.",
     ],
