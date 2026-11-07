@@ -59,7 +59,7 @@ const personJsonLd = {
   name: "Ioannis Michadasis",
   alternateName: "John Michadasis",
   url: siteUrl,
-  image: `${siteUrl}/mich.png`,
+  image: `${siteUrl}/profile.jpg`,
   jobTitle: "Computer Science Student",
   description: siteDescription,
   email: "mailto:contact@michadasis.com",
@@ -89,7 +89,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="motion-safe:scroll-smooth">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
